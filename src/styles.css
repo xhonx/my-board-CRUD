@@ -1,0 +1,245 @@
+.app-container {
+  font-family: "Arial", sans-serif; /* 기본 폰트 설정 */
+  background-color: rgb(109, 109, 131);
+  width: 100vw;
+  height: 100vh;
+
+  /* 앱 컨테이너 패딩 == 마진보다 패딩주는게 더 깔끔한듯*/
+  /* background-color: #f8f9fa; 배경색 설정 */
+  /* 와 간격 범인이 애였어. 가장 상위태그가 얘임. */
+}
+
+.container-purple {
+  display: flex;
+  background-color: transparent;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.container-white {
+  width: 100%;
+  height: calc(100vh - 40px);
+  box-sizing: border-box; /* 오 페이지 길이 줄이면 패딩도 같이 생김 */
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+/* 메인 영역 */
+.main-container {
+  background-color: transparent;
+  border-radius: 15px;
+}
+
+.board-container {
+  height: calc(100vh - 210px);
+  /* min-height: 150px; */
+  background-color: #e7e7e7;
+  box-shadow: 7px 7px 9px -4px #c1c1c1;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+/* 게시판 인덱스 영역 */
+.boardindex-container {
+  background-color: transparent;
+  width: 40%;
+  min-width: 30%;
+}
+
+.search-and-write {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 이하 기존 스타일 정의 */
+.nav-tabs {
+  display: flex;
+  background-color: transparent;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  padding: 0px 15px;
+  /* padding-left: 15px; */
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.boardindex-1,
+.boardindex-2,
+.boardindex-3,
+.boardindex-4 {
+  width: 195px;
+  min-width: 75px;
+  height: 40px;
+  padding: 5px 5px;
+  border: none;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  box-shadow: inset -4px 3px 7px -4px #606060;
+  background-color: #d0d0d0;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #5c5c5c;
+  cursor: pointer;
+  transition: font-size 0.3s ease;
+}
+
+.boardindex-1:hover {
+  font-size: 17px;
+}
+.boardindex-2:hover {
+  font-size: 17px;
+}
+.boardindex-3:hover {
+  font-size: 17px;
+}
+.boardindex-4:hover {
+  font-size: 17px;
+}
+
+/* active 클래스가 추가된 버튼에 적용될 스타일 */
+.active {
+  width: 195px;
+  min-width: 75px;
+  height: 40px;
+  padding: 5px 5px;
+  border: none;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  box-shadow: inset -5px 4px 7px -4px rgb(137, 135, 170);
+  background-color: #e7e7e7;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #5c5c5c;
+  cursor: pointer;
+}
+
+.notice-button {
+  width: 36px;
+  height: 40px;
+  background-color: #b4b4b4;
+  box-shadow: inset -5px 4px 7px -4px rgb(109, 109, 109);
+  border: none;
+  border-radius: 13px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.notice-button:hover {
+  transform: scale(1.1);
+  transition-duration: 0.3s;
+}
+
+.alarm-button {
+  width: 36px;
+  height: 40px;
+  background-color: #d9c08c;
+  box-shadow: inset -5px 4px 7px -1px rgb(147, 134, 100);
+  border: none;
+  border-radius: 13px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.alarm-button:hover {
+  transform: scale(1.1);
+  transition-duration: 0.3s;
+}
+
+.mypage-button {
+  width: 99px;
+  height: 40px;
+  background-color: #8d93a3;
+  box-shadow: inset -5px 4px 7px -1px rgb(94, 97, 121);
+  border: none;
+  border-radius: 13px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.mypage-button:hover {
+  transform: scale(1.07);
+  transition-duration: 0.3s;
+}
+
+.loginout-button {
+  width: 99px;
+  height: 40px;
+  background-color: #a78a90;
+  box-shadow: inset -5px 4px 7px -1px rgb(114, 92, 92);
+  border: none;
+  border-radius: 13px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.loginout-button:hover {
+  transform: scale(1.07);
+  transition-duration: 0.3s;
+}
+
+.table {
+  /* padding: 10px 10px; */
+  width: 100%;
+  margin-top: 20px;
+  table-layout: fixed; /* 길이 설정해야 밑에서 overflow 사용 ㄱㄴ */
+  border-collapse: separate;
+}
+
+.table th,
+.table td {
+  text-align: center; /* 테이블의 열 중앙정렬, 헤더테이블의 열과 맞추기. */
+  padding: 8px 30px;
+  border-bottom: 1px solid #c9c9c9;
+  overflow: hidden; /* 설정 범위 넘어가는 것들은 표시 X */
+  text-overflow: ellipsis; /* 범위 넘어가는 텍스트는 ... 으로 표시 */
+  white-space: nowrap; /* 공백문자가 있으면 줄바꿈 안 하고 한 줄로 표시 */
+}
+
+.table th {
+  background-color: #e7e7e7;
+  border-top: #333;
+  color: #333;
+}
+
+.search-bar {
+  width: 100px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-button {
+  border: 0;
+  background-color: rgb(149, 146, 147);
+  color: white;
+  padding: 7px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.search-button:hover {
+  transform: scale(1.03);
+  transition-duration: 0.3s;
+}
+
+.write-button {
+  border: 0;
+  background-color: rgb(119, 115, 116);
+  color: white;
+  padding: 7px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.write-button:hover {
+  transform: scale(1.03);
+  transition-duration: 0.3s;
+}
+
+.top-right-links {
+  display: flex;
+  justify-content: flex-end; /* 화면의 맨 오른쪽에 배치 */
+  /* 위아래 오른쪽 간격 */
+  /* padding-bottom: 10px; */
+  margin-bottom: 10px; /* 헤더 버튼이랑 인덱스랑 간격 */
+  gap: 8px; /* 버튼 간의 간격 */
+}

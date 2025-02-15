@@ -1,0 +1,34 @@
+.write-page {
+  padding: 10px;
+}
+
+.postSubmit-Button {
+  border: 0;
+  background-color: rgb(149, 146, 147);
+  color: white;
+  padding: 7px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.postSubmit-Button:hover {
+  transform: scale(1.03);
+  transition-duration: 0.3s;
+}
+
+.title {
+  width: 100%; /* 부모 컨테이너의 전체 너비로 확장 */
+  box-sizing: border-box; /* 패딩과 border를 width에 포함 */
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.content {
+  overflow: auto;
+  width: 100%; /* 너비 300px */
+  height: 400px; /* 높이 40px */
+  min-height: 150px;
+  box-sizing: border-box;
+  padding: 8px;
+  resize: none;
+  margin-bottom: 10px;
+}

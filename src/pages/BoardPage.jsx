@@ -1,22 +1,28 @@
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { BoardContext } from "../contexts/BoardContext";
 import BoardTabs from "../components/BoardTabs";
 import SearchBar from "../components/SearchBar";
 import PostTable from "../components/PostTable";
-import { BoardPost } from "../data/postData";
+// import { BoardPost } from "../data/postData";
 import WriteButton from "../components/WriteButton";
 import SearchButton from "../components/SearchButton";
 import BoardTitle from "../components/BoardTitle";
 
 function BoardPage() {
   const { boardName } = useParams();
-  const boardData = BoardPost.find((board) =>
+  const navigate = useNavigate();
+  const { boards } = useContext(BoardContext);
+
+  const boardData = boards.find((board) =>
     board.BoardIndex.toLowerCase().includes(boardName.toLowerCase())
   );
 
-  const navigate = useNavigate();
   const goToMyPage = () => {
-    navigate("/myPage");
+    navigate("/myPage/Profile");
+  };
+  const goToWritePage = () => {
+    navigate(`/board/${boardName}/write`);
   };
 
   return (
@@ -39,7 +45,7 @@ function BoardPage() {
             <div className="search-and-write">
               <SearchBar />
               <SearchButton />
-              <WriteButton />
+              <WriteButton onClick={goToWritePage} />
             </div>
             <div>
               {boardData ? (

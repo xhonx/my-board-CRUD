@@ -6,7 +6,7 @@ function BoardTitle() {
     <div
       style={{
         fontSize: "2rem",
-        color: "rgb(90, 90, 90)",
+        color: "rgb(70, 70, 70)",
         fontWeight: "700",
         padding: "10px",
       }}

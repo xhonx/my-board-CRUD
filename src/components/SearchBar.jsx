@@ -3,6 +3,3 @@ function SearchBar() {
 }
 
 export default SearchBar;
-
-// 서치 버튼 누르면 바 나타나고
-// 원래는 사라짐~~

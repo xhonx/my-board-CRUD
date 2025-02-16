@@ -6,7 +6,6 @@ import { BoardPost as dummyBoardPost } from "../data/postData";
 export const BoardContext = createContext();
 
 export const BoardProvider = ({ children }) => {
-  // 더미 데이터를 초기 상태로 사용
   const [boards, setBoards] = useState(dummyBoardPost);
 
   return (

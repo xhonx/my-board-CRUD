@@ -6,7 +6,6 @@ function PostTable({ posts }) {
   const { boardName } = useParams();
 
   const handleRowClick = (postId) => {
-    // boardName과 postId를 포함한 URL로 이동합니다.
     navigate(`/board/${boardName}/post/${postId}`);
   };
 
@@ -27,7 +26,7 @@ function PostTable({ posts }) {
             <tr
               key={post.id}
               onClick={() => handleRowClick(post.id)}
-              style={{ cursor: "pointer" }} // 커서가 포인터로 변경되어 클릭 가능하다는 시각적 힌트를 줍니다.
+              style={{ cursor: "pointer" }}
             >
               <td>{index + 1}</td>
               <td>{post.title}</td>

@@ -1,12 +1,8 @@
 .app-container {
-  font-family: "Arial", sans-serif; /* 기본 폰트 설정 */
+  font-family: "Arial", sans-serif;
   background-color: rgb(109, 109, 131);
   width: 100vw;
   height: 100vh;
-
-  /* 앱 컨테이너 패딩 == 마진보다 패딩주는게 더 깔끔한듯*/
-  /* background-color: #f8f9fa; 배경색 설정 */
-  /* 와 간격 범인이 애였어. 가장 상위태그가 얘임. */
 }
 
 .container-purple {
@@ -19,13 +15,12 @@
 .container-white {
   width: 100%;
   height: calc(100vh - 40px);
-  box-sizing: border-box; /* 오 페이지 길이 줄이면 패딩도 같이 생김 */
+  box-sizing: border-box;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 5px;
 }
 
-/* 메인 영역 */
 .main-container {
   background-color: transparent;
   border-radius: 15px;
@@ -33,18 +28,28 @@
 
 .board-container {
   height: calc(100vh - 210px);
-  /* min-height: 150px; */
   background-color: #e7e7e7;
   box-shadow: 7px 7px 9px -4px #c1c1c1;
   border-radius: 15px;
   padding: 20px;
 }
 
-/* 게시판 인덱스 영역 */
 .boardindex-container {
   background-color: transparent;
   width: 40%;
   min-width: 30%;
+}
+.data_cdntainer {
+  overflow: scroll;
+  max-height: 80%;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: #a9a9a9;
 }
 
 .table_container {
@@ -68,13 +73,10 @@
   gap: 10px;
 }
 
-/* 이하 기존 스타일 정의 */
 .nav-tabs {
   display: flex;
   background-color: transparent;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   padding: 0px 15px;
-  /* padding-left: 15px; */
   justify-content: space-between;
   gap: 5px;
 }
@@ -112,7 +114,6 @@
   font-size: 17px;
 }
 
-/* active 클래스가 추가된 버튼에 적용될 스타일 */
 .active {
   width: 195px;
   min-width: 75px;
@@ -192,21 +193,20 @@
 }
 
 .table {
-  /* padding: 10px 10px; */
   width: 100%;
   margin-top: 20px;
-  table-layout: fixed; /* 길이 설정해야 밑에서 overflow 사용 ㄱㄴ */
+  table-layout: fixed;
   border-collapse: separate;
 }
 
 .table th,
 .table td {
-  text-align: center; /* 테이블의 열 중앙정렬, 헤더테이블의 열과 맞추기. */
+  text-align: center;
   padding: 8px 30px;
   border-bottom: 1px solid #c9c9c9;
-  overflow: hidden; /* 설정 범위 넘어가는 것들은 표시 X */
-  text-overflow: ellipsis; /* 범위 넘어가는 텍스트는 ... 으로 표시 */
-  white-space: nowrap; /* 공백문자가 있으면 줄바꿈 안 하고 한 줄로 표시 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .table th {
@@ -250,9 +250,7 @@
 
 .top-right-links {
   display: flex;
-  justify-content: flex-end; /* 화면의 맨 오른쪽에 배치 */
-  /* 위아래 오른쪽 간격 */
-  /* padding-bottom: 10px; */
-  margin-bottom: 10px; /* 헤더 버튼이랑 인덱스랑 간격 */
-  gap: 8px; /* 버튼 간의 간격 */
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  gap: 8px;
 }

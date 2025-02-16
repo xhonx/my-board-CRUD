@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+// src/pages/WritePostPage.jsx
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BoardContext } from "../contexts/BoardContext";
-
+import { createPost } from "../services/postService";
 import BoardTabs from "../components/BoardTabs";
 import BoardTitle from "../components/BoardTitle";
 import "../writeStyles.css";
@@ -9,10 +9,8 @@ import "../writeStyles.css";
 function WritePostPage() {
   const { boardName } = useParams();
   const navigate = useNavigate();
-  const { setBoards } = useContext(BoardContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [ModDate, setModDate] = useState("");
 
   const goToMyPage = () => {
     navigate("/myPage/Profile");
@@ -21,38 +19,30 @@ function WritePostPage() {
     navigate(`/board/${boardName}`);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 여기서 폼 제출 로직을 구현합니다.
-    // 제출 후, 해당 게시판 페이지로 이동
     const offset = new Date().getTimezoneOffset() * 60000;
     const createdDate = new Date(Date.now() - offset)
       .toISOString()
       .replace("T", " ")
       .replace(/\..*/, "");
     const newPost = {
-      id: Date.now(), // 간단한 고유 id (실제 DB에서는 다른 방법 사용)
+      board: boardName, // 추가: 게시판 정보 포함
+      // id는 보통 백엔드에서 생성하지만, 임시로 Date.now() 사용
+      id: String(Date.now()),
       title,
       content,
       time: createdDate,
-      // ModDate,
-      user: "hannah", // 로그인 시스템이 있다면 실제 사용자 정보로 교체
+      user: "hannah",
     };
-    // boards 상태 업데이트: 해당 게시판의 posts 배열에 새 글 추가
-    setBoards((prevBoards) =>
-      prevBoards.map((board) => {
-        if (board.BoardIndex.toLowerCase() === boardName.toLowerCase()) {
-          return {
-            ...board,
-            posts: [...board.posts, newPost],
-          };
-        }
-        return board;
-      })
-    );
+    console.log("New post:", newPost);
 
-    // 글 작성 완료 후, 해당 게시판 페이지로 이동
-    navigate(`/board/${boardName}`);
+    try {
+      await createPost(newPost);
+      navigate(`/board/${boardName}`);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   };
 
   return (
@@ -73,10 +63,8 @@ function WritePostPage() {
           <div className="board-container">
             <BoardTitle />
             <div>
-              {/* <h2>{boardName} 게시판 - 글 작성</h2> */}
               <form onSubmit={handleSubmit} className="write-page">
                 <div>
-                  {/* <label htmlFor="title"></label> */}
                   <input
                     style={{
                       width: "100%",
@@ -99,7 +87,6 @@ function WritePostPage() {
                   />
                 </div>
                 <div className="content-container">
-                  {/* <label htmlFor="content"></label> */}
                   <textarea
                     style={{
                       width: "100%",

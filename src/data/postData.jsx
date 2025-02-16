@@ -4,7 +4,6 @@ export const BoardPost = [
     BoardIndex: "Free", // url이랑 비교함. 게시판 url 이랑 같아야됨.
     //title: "# Free",
 
-    // posts 배열 !! 각 게시판 별 실제 테이블에 보여야되는 데이터
     posts: [
       {
         id: 1, // 게시글 순서 번호

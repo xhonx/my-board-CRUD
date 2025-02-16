@@ -7,7 +7,7 @@ function MyPageTab() {
 
   useEffect(() => {
     setActiveIndex(location.pathname);
-  }, [location.pathname]);
+  }, []);
 
   const handleClick = (route) => {
     setActiveIndex(route);

@@ -1,0 +1,164 @@
+import { useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { BoardContext } from "../contexts/BoardContext";
+import { updatePost } from "../services/postService";
+import BoardTabs from "../components/BoardTabs";
+import "../readStyles.css";
+
+function EditPostPage() {
+  const { boardName, postId } = useParams();
+  const { boards, setBoards } = useContext(BoardContext);
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState(post ? post.title : "");
+  const [content, setContent] = useState(post ? post.content || "" : "");
+  const goToMyPage = () => {
+    navigate("/myPage/Profile");
+  };
+
+  const filteredPosts = boards.filter(
+    (post) => post.board && post.board.toLowerCase() === boardName.toLowerCase()
+  );
+
+  if (filteredPosts.length === 0) {
+    return <div>게시판을 찾을 수 없습니다.</div>;
+  }
+
+  const post = filteredPosts.find((p) => String(p.id) === postId);
+  if (!post) {
+    return <div>게시글을 찾을 수 없습니다.</div>;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const offset = new Date().getTimezoneOffset() * 60000;
+    const modDate = new Date(Date.now() - offset)
+      .toISOString()
+      .replace("T", " ")
+      .replace(/\..*/, "");
+
+    const updatedPost = {
+      ...post,
+      title,
+      content,
+      ModDate: modDate,
+    };
+
+    try {
+      const response = await updatePost(postId, updatedPost);
+      // BoardContext 업데이트 (필요한 경우)
+      setBoards((prevBoards) =>
+        prevBoards.map((board) => {
+          if (board.BoardIndex.toLowerCase() === boardName.toLowerCase()) {
+            return {
+              ...board,
+              posts: board.posts.map((p) =>
+                String(p.id) === postId ? response : p
+              ),
+            };
+          }
+          return board;
+        })
+      );
+      navigate(`/board/${boardName}/post/${postId}`);
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  };
+
+  const createdDate = new Date(post.time).toLocaleString();
+  const modifiedDate = new Date(post.ModDate).toLocaleString();
+  const showModifiedDate = post.ModDate && post.ModDate !== post.time;
+
+  return (
+    <div className="container-purple">
+      <div className="container-white">
+        <div className="top-right-links">
+          <button className="notice-button">📢</button>
+          <button className="alarm-button">🔔</button>
+          <button className="mypage-button" onClick={goToMyPage}>
+            MyPage
+          </button>
+          <button className="loginout-button">LogOut</button>
+        </div>
+        <div className="main-container">
+          <div className="boardindex-container">
+            <BoardTabs />
+          </div>
+          <div className="board-container">
+            <div className="read_container">
+              <form onSubmit={handleSubmit}>
+                <input
+                  id="title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    height: "55px",
+                    boxSizing: "border-box",
+                    fontSize: "1.8rem",
+                    color: "rgb(70, 70, 70)",
+                    fontWeight: "700",
+                    marginTop: "5px",
+                    padding: "10px",
+                    border: "none",
+                    borderRadius: "10px",
+                  }}
+                />
+              </form>
+              <div className="post_info">
+                <p>
+                  <strong>작성일:</strong> {createdDate}
+                  {showModifiedDate && (
+                    <>
+                      &nbsp;|&nbsp;<strong>수정일:</strong> {modifiedDate}
+                    </>
+                  )}{" "}
+                  &nbsp;|&nbsp; <strong>작성자:</strong> {post.user}
+                </p>
+              </div>
+              <div>
+                <form onSubmit={handleSubmit}>
+                  <div>
+                    <textarea
+                      id="content"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      required
+                      style={{
+                        width: "100%",
+                        padding: "10px",
+                        border: "none",
+                        borderRadius: "10px",
+                        margin: "5px 0",
+                        minHeight: "300px",
+                        boxSizing: "border-box",
+                        resize: "none",
+                      }}
+                    />
+                  </div>
+                  <div style={{ textAlign: "center", marginTop: "10px" }}>
+                    <button
+                      className="cancle_button"
+                      type="button"
+                      onClick={() => navigate(-1)}
+                    >
+                      취소
+                    </button>
+                    <button className="update_button" type="submit">
+                      변경 저장
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default EditPostPage;

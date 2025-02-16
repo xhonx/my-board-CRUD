@@ -9,7 +9,6 @@ import "./styles.css";
 
 function App() {
   return (
-    // 원래 여기가 app-container
     <BoardProvider>
       <div className="app-container">
         <Routes>

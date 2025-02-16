@@ -1,43 +1,60 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { BoardContext } from "../contexts/BoardContext";
+import { updatePost } from "../services/postService";
 import BoardTabs from "../components/BoardTabs";
 import "../readStyles.css";
 
 function EditPostPage() {
   const { boardName, postId } = useParams();
-  const navigate = useNavigate();
   const { boards, setBoards } = useContext(BoardContext);
+  const navigate = useNavigate();
+
+  // 모든 Hook은 최상위에서 호출
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  // boards가 아직 로드되지 않은 경우
+  const isLoading = !boards || boards.length === 0;
+
+  // boards가 로드된 경우, boardName과 일치하는 게시글들만 필터링
+  const filteredPosts = boards
+    ? boards.filter(
+        (post) =>
+          post.board && post.board.toLowerCase() === boardName.toLowerCase()
+      )
+    : [];
+  const boardNotFound = !isLoading && filteredPosts.length === 0;
+  const foundPost =
+    !isLoading && !boardNotFound
+      ? filteredPosts.find((p) => String(p.id) === postId)
+      : null;
+  const postNotFound = !isLoading && !boardNotFound && !foundPost;
+
+  // useEffect는 항상 호출되며 내부에서 조건에 따라 업데이트
+  useEffect(() => {
+    if (foundPost) {
+      setTitle(foundPost.title);
+      setContent(foundPost.content || "");
+    }
+  }, [foundPost]);
+
+  // 조건에 따른 렌더링
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (boardNotFound) {
+    return <div>게시판을 찾을 수 없습니다.</div>;
+  }
+  if (postNotFound) {
+    return <div>게시글을 찾을 수 없습니다.</div>;
+  }
 
   const goToMyPage = () => {
     navigate("/myPage/Profile");
   };
 
-  // 조건문 이전에 boardData와 post를 계산합니다.
-  const boardData = boards.find(
-    (board) => board.BoardIndex.toLowerCase() === boardName.toLowerCase()
-  );
-
-  // boardData가 없으면 post는 null
-  const post = boardData
-    ? boardData.posts.find((p) => String(p.id) === postId)
-    : null;
-
-  // 모든 훅은 조건에 상관없이 호출합니다.
-  const [title, setTitle] = useState(post ? post.title : "");
-  const [content, setContent] = useState(post ? post.content || "" : "");
-  // const [ModDate, setModDate] = useState(post ? post.ModDate || "" : "");
-
-  // boardData나 post가 없으면 에러 메시지를 반환합니다.
-  if (!boardData) {
-    return <div>게시판을 찾을 수 없습니다.</div>;
-  }
-
-  if (!post) {
-    return <div>게시글을 찾을 수 없습니다.</div>;
-  }
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const offset = new Date().getTimezoneOffset() * 60000;
     const modDate = new Date(Date.now() - offset)
@@ -46,33 +63,37 @@ function EditPostPage() {
       .replace(/\..*/, "");
 
     const updatedPost = {
-      ...post,
+      ...foundPost,
       title,
       content,
       ModDate: modDate,
     };
 
-    // Context 업데이트: 해당 게시글 수정
-    setBoards((prevBoards) =>
-      prevBoards.map((board) => {
-        if (board.BoardIndex.toLowerCase() === boardName.toLowerCase()) {
-          return {
-            ...board,
-            posts: board.posts.map((p) =>
-              String(p.id) === postId ? updatedPost : p
-            ),
-          };
-        }
-        return board;
-      })
-    );
-
-    // 수정 완료 후, 상세 페이지로 이동
-    navigate(`/board/${boardName}/post/${postId}`);
+    try {
+      const response = await updatePost(postId, updatedPost);
+      // Context 업데이트: 해당 게시글만 업데이트
+      setBoards((prevPosts) =>
+        prevPosts.map((p) =>
+          String(p.id) === postId
+            ? response.data
+              ? response.data
+              : updatedPost
+            : p
+        )
+      );
+      navigate(`/board/${boardName}/post/${postId}`);
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
   };
-  const createdDate = new Date(post.time).toLocaleString();
-  const modifiedDate = new Date(post.ModDate).toLocaleString();
-  const showModifiedDate = post.ModDate && post.ModDate !== post.time;
+
+  const createdDate = new Date(foundPost.time).toLocaleString();
+  // const modifiedDate = foundPost.ModDate
+  //   ? new Date(foundPost.ModDate).toLocaleString()
+  //   : "";
+  // const showModifiedDate =
+  //   foundPost.ModDate && foundPost.ModDate !== foundPost.time;
+
   return (
     <div className="container-purple">
       <div className="container-white">
@@ -89,7 +110,6 @@ function EditPostPage() {
             <BoardTabs />
           </div>
           <div className="board-container">
-            {/* 여기서부터 채우기 */}
             <div className="read_container">
               <form onSubmit={handleSubmit}>
                 <input
@@ -111,61 +131,46 @@ function EditPostPage() {
                     borderRadius: "10px",
                   }}
                 />
+                <div className="post_info">
+                  <p>
+                    <strong>작성일:</strong> {createdDate}
+                    &nbsp;|&nbsp; <strong>작성자:</strong> {foundPost.user}
+                  </p>
+                </div>
+                <textarea
+                  id="content"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "none",
+                    borderRadius: "10px",
+                    margin: "5px 0",
+                    minHeight: "300px",
+                    boxSizing: "border-box",
+                    resize: "none",
+                  }}
+                />
+                <div style={{ textAlign: "center", marginTop: "10px" }}>
+                  <button
+                    className="cancle_button"
+                    type="button"
+                    onClick={() => navigate(-1)}
+                  >
+                    취소
+                  </button>
+                  <button className="update_button" type="submit">
+                    변경 저장
+                  </button>
+                </div>
               </form>
-              <div className="post_info">
-                <p>
-                  <strong>작성일:</strong> {createdDate}
-                  {showModifiedDate && (
-                    <>
-                      &nbsp;|&nbsp;<strong>수정일:</strong>
-                      {modifiedDate}
-                    </>
-                  )}{" "}
-                  &nbsp;|&nbsp; <strong>작성자:</strong> {post.user}
-                </p>
-              </div>
-              <div>
-                {/* <h2>게시글 수정</h2> */}
-                <form onSubmit={handleSubmit}>
-                  <div>
-                    <textarea
-                      id="content"
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "10px",
-                        border: "none",
-                        borderRadius: "10px",
-                        margin: "5px 0",
-                        minHeight: "300px",
-                        boxSizing: "border-box",
-                        resize: "none",
-                      }}
-                    />
-                  </div>
-                  <div style={{ textAlign: "center", marginTop: "10px" }}>
-                    <button
-                      className="cancle_button"
-                      type="button"
-                      onClick={() => navigate(-1)}
-                    >
-                      취소
-                    </button>
-                    <button className="update_button" type="submit">
-                      변경 저장
-                    </button>
-                    &nbsp;
-                  </div>
-                </form>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    // 여기서부터 코드
   );
 }
 

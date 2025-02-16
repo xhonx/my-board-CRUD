@@ -12,6 +12,7 @@ function WritePostPage() {
   const { setBoards } = useContext(BoardContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  // const [ModDate, setModDate] = useState("");
 
   const goToBoardPage = () => {
     navigate("/board/HN");
@@ -30,6 +31,7 @@ function WritePostPage() {
       title,
       content,
       time: currentTime,
+      // ModDate,
       user: "hannah", // 로그인 시스템이 있다면 실제 사용자 정보로 교체
     };
     // boards 상태 업데이트: 해당 게시판의 posts 배열에 새 글 추가

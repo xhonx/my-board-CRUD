@@ -41,12 +41,22 @@ function ReadPostPage() {
     }
   };
 
+  const createdDate = new Date(post.time).toLocaleString();
+  const modifiedDate = new Date(post.ModDate).toLocaleString();
+  const showModifiedDate = post.ModDate && post.ModDate !== post.time;
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>{post.title}</h2>
       <p>
-        <strong>작성일:</strong> {post.time} &nbsp;|&nbsp;{" "}
-        <strong>작성자:</strong> {post.user}
+        <strong>작성일:</strong> {createdDate}
+        {showModifiedDate && (
+          <>
+            &nbsp;|&nbsp;<strong>수정일:</strong>
+            {modifiedDate}
+          </>
+        )}{" "}
+        &nbsp;|&nbsp; <strong>작성자:</strong> {post.user}
       </p>
       {/* 만약 post 객체에 내용(content) 필드가 있다면 표시합니다. */}
       <div style={{ marginTop: "20px" }}>

@@ -17,6 +17,7 @@ function PostTable({ posts }) {
           <th>No</th>
           <th>Title</th>
           <th>Time</th>
+          <th>ModDate</th>
           <th>User</th>
         </tr>
       </thead>
@@ -31,6 +32,7 @@ function PostTable({ posts }) {
               <td>{index + 1}</td>
               <td>{post.title}</td>
               <td>{post.time}</td>
+              <td>{post.ModDate}</td>
               <td>{post.user}</td>
             </tr>
           ))

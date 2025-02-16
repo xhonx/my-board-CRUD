@@ -21,6 +21,7 @@ function EditPostPage() {
   // 모든 훅은 조건에 상관없이 호출합니다.
   const [title, setTitle] = useState(post ? post.title : "");
   const [content, setContent] = useState(post ? post.content || "" : "");
+  // const [ModDate, setModDate] = useState(post ? post.ModDate || "" : "");
 
   // boardData나 post가 없으면 에러 메시지를 반환합니다.
   if (!boardData) {
@@ -33,10 +34,14 @@ function EditPostPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const modDate = new Date().toISOString();
+
     const updatedPost = {
       ...post,
       title,
       content,
+      ModDate: modDate,
     };
 
     // Context 업데이트: 해당 게시글 수정

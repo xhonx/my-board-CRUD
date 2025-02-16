@@ -28,6 +28,7 @@ function WritePostPage() {
     const newPost = {
       id: Date.now(), // 간단한 고유 id (실제 DB에서는 다른 방법 사용)
       title,
+      content,
       time: currentTime,
       user: "hannah", // 로그인 시스템이 있다면 실제 사용자 정보로 교체
     };

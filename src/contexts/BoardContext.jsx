@@ -1,4 +1,4 @@
-// src/contexts/BoardContext.jsx
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 import { BoardPost as dummyBoardPost } from "../data/postData";

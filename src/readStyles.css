@@ -1,0 +1,43 @@
+.read_container {
+  padding: 20px;
+}
+
+.post_info {
+  color: rgb(141, 141, 141);
+}
+
+.button_container {
+  margin-top: 60px;
+}
+
+.list_button {
+  display: inline;
+  float: right;
+  margin-right: 5px;
+  width: 91px;
+  border: 0;
+  background-color: rgb(136, 136, 136);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update_button {
+  margin-right: 5px;
+  border: 0;
+  background-color: rgb(110, 115, 127);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete_button {
+  border: 0;
+  background-color: rgb(130, 96, 105);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,4 +1,3 @@
-// src/pages/EditPostPage.jsx
 import { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { BoardContext } from "../contexts/BoardContext";
@@ -35,7 +34,10 @@ function EditPostPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const modDate = new Date().toISOString();
+    const modDate = new Date()
+      .toISOString()
+      .replace("T", " ")
+      .replace(/\..*/, "");
 
     const updatedPost = {
       ...post,

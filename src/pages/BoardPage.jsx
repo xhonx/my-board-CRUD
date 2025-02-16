@@ -1,10 +1,10 @@
+// src/pages/BoardPage.jsx
 import { useParams, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { BoardContext } from "../contexts/BoardContext";
+import { useState, useEffect } from "react";
+import { fetchPosts } from "../services/postService";
 import BoardTabs from "../components/BoardTabs";
 import SearchBar from "../components/SearchBar";
 import PostTable from "../components/PostTable";
-// import { BoardPost } from "../data/postData";
 import WriteButton from "../components/WriteButton";
 import SearchButton from "../components/SearchButton";
 import BoardTitle from "../components/BoardTitle";
@@ -12,18 +12,32 @@ import BoardTitle from "../components/BoardTitle";
 function BoardPage() {
   const { boardName } = useParams();
   const navigate = useNavigate();
-  const { boards } = useContext(BoardContext);
-
-  const boardData = boards.find((board) =>
-    board.BoardIndex.toLowerCase().includes(boardName.toLowerCase())
-  );
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const goToMyPage = () => {
     navigate("/myPage/Profile");
   };
+
   const goToWritePage = () => {
     navigate(`/board/${boardName}/write`);
   };
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        const data = await fetchPosts(boardName);
+        setPosts(data);
+      } catch (err) {
+        console.error("Error loading posts:", err);
+        setError("게시글을 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPosts();
+  }, [boardName]);
 
   return (
     <div className="container-purple">
@@ -48,10 +62,12 @@ function BoardPage() {
               <WriteButton onClick={goToWritePage} />
             </div>
             <div className="table_container">
-              {boardData ? (
-                <PostTable posts={boardData.posts} />
+              {loading ? (
+                <div>Loading...</div>
+              ) : error ? (
+                <div>{error}</div>
               ) : (
-                <div>해당 게시판을 찾을 수 없습니다.</div>
+                <PostTable posts={posts} />
               )}
             </div>
           </div>

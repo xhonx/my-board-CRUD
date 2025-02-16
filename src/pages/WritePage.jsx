@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+// src/pages/WritePostPage.jsx
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BoardContext } from "../contexts/BoardContext";
-
+import { createPost } from "../services/postService";
 import BoardTabs from "../components/BoardTabs";
 import BoardTitle from "../components/BoardTitle";
 import "../writeStyles.css";
@@ -9,7 +9,6 @@ import "../writeStyles.css";
 function WritePostPage() {
   const { boardName } = useParams();
   const navigate = useNavigate();
-  const { setBoards } = useContext(BoardContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -20,7 +19,7 @@ function WritePostPage() {
     navigate(`/board/${boardName}`);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const offset = new Date().getTimezoneOffset() * 60000;
     const createdDate = new Date(Date.now() - offset)
@@ -28,26 +27,22 @@ function WritePostPage() {
       .replace("T", " ")
       .replace(/\..*/, "");
     const newPost = {
-      id: Date.now(),
+      board: boardName, // 추가: 게시판 정보 포함
+      // id는 보통 백엔드에서 생성하지만, 임시로 Date.now() 사용
+      id: String(Date.now()),
       title,
       content,
       time: createdDate,
       user: "hannah",
     };
+    console.log("New post:", newPost);
 
-    setBoards((prevBoards) =>
-      prevBoards.map((board) => {
-        if (board.BoardIndex.toLowerCase() === boardName.toLowerCase()) {
-          return {
-            ...board,
-            posts: [...board.posts, newPost],
-          };
-        }
-        return board;
-      })
-    );
-
-    navigate(`/board/${boardName}`);
+    try {
+      await createPost(newPost);
+      navigate(`/board/${boardName}`);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   };
 
   return (

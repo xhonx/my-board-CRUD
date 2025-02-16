@@ -13,22 +13,17 @@ function EditPostPage() {
     navigate("/myPage/Profile");
   };
 
-  // 조건문 이전에 boardData와 post를 계산합니다.
   const boardData = boards.find(
     (board) => board.BoardIndex.toLowerCase() === boardName.toLowerCase()
   );
 
-  // boardData가 없으면 post는 null
   const post = boardData
     ? boardData.posts.find((p) => String(p.id) === postId)
     : null;
 
-  // 모든 훅은 조건에 상관없이 호출합니다.
   const [title, setTitle] = useState(post ? post.title : "");
   const [content, setContent] = useState(post ? post.content || "" : "");
-  // const [ModDate, setModDate] = useState(post ? post.ModDate || "" : "");
 
-  // boardData나 post가 없으면 에러 메시지를 반환합니다.
   if (!boardData) {
     return <div>게시판을 찾을 수 없습니다.</div>;
   }
@@ -52,7 +47,6 @@ function EditPostPage() {
       ModDate: modDate,
     };
 
-    // Context 업데이트: 해당 게시글 수정
     setBoards((prevBoards) =>
       prevBoards.map((board) => {
         if (board.BoardIndex.toLowerCase() === boardName.toLowerCase()) {
@@ -67,7 +61,6 @@ function EditPostPage() {
       })
     );
 
-    // 수정 완료 후, 상세 페이지로 이동
     navigate(`/board/${boardName}/post/${postId}`);
   };
   const createdDate = new Date(post.time).toLocaleString();
@@ -125,7 +118,6 @@ function EditPostPage() {
                 </p>
               </div>
               <div>
-                {/* <h2>게시글 수정</h2> */}
                 <form onSubmit={handleSubmit}>
                   <div>
                     <textarea
@@ -165,7 +157,6 @@ function EditPostPage() {
         </div>
       </div>
     </div>
-    // 여기서부터 코드
   );
 }
 

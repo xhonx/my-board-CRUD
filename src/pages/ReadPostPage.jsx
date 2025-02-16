@@ -16,7 +16,6 @@ function ReadPostPage() {
     navigate("/myPage/Profile");
   };
 
-  // 해당 게시판 데이터를 찾습니다.
   const boardData = boards.find(
     (board) => board.BoardIndex.toLowerCase() === boardName.toLowerCase()
   );
@@ -25,7 +24,6 @@ function ReadPostPage() {
     return <div>게시판을 찾을 수 없습니다.</div>;
   }
 
-  // 게시글 id는 숫자 혹은 문자열일 수 있으므로 문자열 비교
   const post = boardData.posts.find((p) => String(p.id) === postId);
   if (!post) {
     return <div>게시글을 찾을 수 없습니다.</div>;
@@ -100,7 +98,6 @@ function ReadPostPage() {
                 >
                   수정
                 </button>
-                {/* 수정: onClick을 화살표 함수로 감싸서 즉시 실행되지 않도록 함 */}
                 <button
                   className="delete_button"
                   onClick={() => setModalOpen(true)}
@@ -146,9 +143,7 @@ function ReadPostPage() {
                                 return board;
                               })
                             );
-                            // 게시판 목록 페이지로 이동
                             navigate(`/board/${boardName}`);
-                            // 모달 창 닫기
                             setModalOpen(false);
                           }}
                         >

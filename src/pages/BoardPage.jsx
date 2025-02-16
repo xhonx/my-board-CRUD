@@ -47,9 +47,8 @@ function BoardPage() {
               <SearchButton />
               <WriteButton onClick={goToWritePage} />
             </div>
-            <div>
+            <div className="table_container">
               {boardData ? (
-                // PostTable은 기존의 테이블 형식 내용을 그대로 사용합니다.
                 <PostTable posts={boardData.posts} />
               ) : (
                 <div>해당 게시판을 찾을 수 없습니다.</div>

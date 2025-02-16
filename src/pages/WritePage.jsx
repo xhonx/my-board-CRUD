@@ -14,8 +14,8 @@ function WritePostPage() {
   const [content, setContent] = useState("");
   // const [ModDate, setModDate] = useState("");
 
-  const goToBoardPage = () => {
-    navigate("/board/HN");
+  const goToMyPage = () => {
+    navigate("/myPage/Profile");
   };
   const goToBefore = () => {
     navigate(`/board/${boardName}`);
@@ -61,8 +61,8 @@ function WritePostPage() {
         <div className="top-right-links">
           <button className="notice-button">📢</button>
           <button className="alarm-button">🔔</button>
-          <button className="mypage-button" onClick={goToBoardPage}>
-            BoardPage
+          <button className="mypage-button" onClick={goToMyPage}>
+            MyPage
           </button>
           <button className="loginout-button">LogOut</button>
         </div>
@@ -78,7 +78,18 @@ function WritePostPage() {
                 <div>
                   {/* <label htmlFor="title"></label> */}
                   <input
-                    className="title"
+                    style={{
+                      width: "100%",
+                      height: "55px",
+                      boxSizing: "border-box",
+                      fontSize: "1.8rem",
+                      color: "rgb(70, 70, 70)",
+                      fontWeight: "700",
+                      marginTop: "5px",
+                      padding: "10px",
+                      border: "none",
+                      borderRadius: "10px",
+                    }}
                     id="title"
                     type="text"
                     placeholder="제목을 입력하세요"
@@ -90,7 +101,17 @@ function WritePostPage() {
                 <div className="content-container">
                   {/* <label htmlFor="content"></label> */}
                   <textarea
-                    className="content"
+                    style={{
+                      width: "100%",
+                      padding: "8px",
+                      border: "none",
+                      borderRadius: "10px",
+                      margin: "5px 0",
+                      minHeight: "300px",
+                      boxSizing: "border-box",
+                      resize: "none",
+                      marginTop: "20px",
+                    }}
                     id="content"
                     placeholder="내용을 입력하세요"
                     required
@@ -105,7 +126,7 @@ function WritePostPage() {
                     gap: "5px",
                   }}
                 >
-                  <button className="postSubmit-Button" onClick={goToBefore}>
+                  <button className="return_Button" onClick={goToBefore}>
                     이전
                   </button>
                   <button className="postSubmit-Button" type="submit">

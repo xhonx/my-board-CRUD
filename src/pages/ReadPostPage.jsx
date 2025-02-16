@@ -12,8 +12,8 @@ function ReadPostPage() {
   const modalBackground = useRef();
 
   const navigate = useNavigate();
-  const goToBoardPage = () => {
-    navigate("/board/HN");
+  const goToMyPage = () => {
+    navigate("/myPage/Profile");
   };
 
   // 해당 게시판 데이터를 찾습니다.
@@ -41,8 +41,8 @@ function ReadPostPage() {
         <div className="top-right-links">
           <button className="notice-button">📢</button>
           <button className="alarm-button">🔔</button>
-          <button className="mypage-button" onClick={goToBoardPage}>
-            BoardPage
+          <button className="mypage-button" onClick={goToMyPage}>
+            MyPage
           </button>
           <button className="loginout-button">LogOut</button>
         </div>

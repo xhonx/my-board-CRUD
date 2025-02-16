@@ -16,8 +16,8 @@ function PostTable({ posts }) {
         <tr>
           <th>No</th>
           <th>Title</th>
-          <th>Time</th>
-          <th>ModDate</th>
+          <th>Date</th>
+          <th>Date Modified</th>
           <th>User</th>
         </tr>
       </thead>

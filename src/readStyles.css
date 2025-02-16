@@ -13,10 +13,19 @@
 .list_button {
   display: inline;
   float: right;
-  margin-right: 5px;
   width: 91px;
   border: 0;
   background-color: rgb(136, 136, 136);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancle_button {
+  margin-right: 5px;
+  border: 0;
+  background-color: rgb(149, 153, 162);
   color: white;
   padding: 5px 10px;
   border-radius: 5px;

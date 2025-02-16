@@ -9,8 +9,8 @@ function EditPostPage() {
   const navigate = useNavigate();
   const { boards, setBoards } = useContext(BoardContext);
 
-  const goToBoardPage = () => {
-    navigate("/board/HN");
+  const goToMyPage = () => {
+    navigate("/myPage/Profile");
   };
 
   // 조건문 이전에 boardData와 post를 계산합니다.
@@ -79,8 +79,8 @@ function EditPostPage() {
         <div className="top-right-links">
           <button className="notice-button">📢</button>
           <button className="alarm-button">🔔</button>
-          <button className="mypage-button" onClick={goToBoardPage}>
-            BoardPage
+          <button className="mypage-button" onClick={goToMyPage}>
+            MyPage
           </button>
           <button className="loginout-button">LogOut</button>
         </div>
@@ -92,7 +92,6 @@ function EditPostPage() {
             {/* 여기서부터 채우기 */}
             <div className="read_container">
               <form onSubmit={handleSubmit}>
-                <div></div>
                 <input
                   id="title"
                   type="text"
@@ -136,7 +135,7 @@ function EditPostPage() {
                       required
                       style={{
                         width: "100%",
-                        padding: "8px",
+                        padding: "10px",
                         border: "none",
                         borderRadius: "10px",
                         margin: "5px 0",
@@ -148,7 +147,7 @@ function EditPostPage() {
                   </div>
                   <div style={{ textAlign: "center", marginTop: "10px" }}>
                     <button
-                      className="update_button"
+                      className="cancle_button"
                       type="button"
                       onClick={() => navigate(-1)}
                     >

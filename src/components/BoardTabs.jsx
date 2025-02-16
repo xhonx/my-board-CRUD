@@ -1,6 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+/*
+-- 추가하고 싶은 기능 --
+📌 게시판의 게시글 페이지에 가도 해당 게시판 인덱스 버튼 색이 유지되도록 하기
+
+-- 필요한 것들 --
+1. 현재 url의 위치
+2. 
+s
+*/
+
 function BoardTabs() {
   const navigate = useNavigate();
   const [activeBoard, setActiveBoard] = useState(""); //activeBoard는 현재 활성화된 경로(예: "/board/Free" 등)를 저장할 변수
@@ -21,7 +31,7 @@ function BoardTabs() {
       {/* # Free 버튼 */}
       <button
         className={`boardindex-1 ${
-          activeBoard === "/board/Free" ? "active" : ""
+          activeBoard.startsWith("/board/Free") ? "active" : ""
         }`}
         onClick={() => {
           handleClick("/board/Free");
@@ -33,7 +43,7 @@ function BoardTabs() {
       {/* # HN 버튼 */}
       <button
         className={`boardindex-2 ${
-          activeBoard === "/board/HN" ? "active" : ""
+          activeBoard.startsWith("/board/HN") ? "active" : ""
         }`}
         onClick={() => {
           handleClick("/board/HN");
@@ -45,7 +55,7 @@ function BoardTabs() {
       {/* # Front 버튼 */}
       <button
         className={`boardindex-3 ${
-          activeBoard === "/board/Front" ? "active" : ""
+          activeBoard.startsWith("/board/Front") ? "active" : ""
         }`}
         onClick={() => {
           handleClick("/board/Front");
@@ -57,7 +67,7 @@ function BoardTabs() {
       {/* # Back 버튼 */}
       <button
         className={`boardindex-4 ${
-          activeBoard === "/board/Back" ? "active" : ""
+          activeBoard.startsWith("/board/Back") ? "active" : ""
         }`}
         onClick={() => {
           handleClick("/board/Back");

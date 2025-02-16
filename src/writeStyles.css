@@ -3,12 +3,14 @@
 }
 
 .postSubmit-Button {
+  margin-right: 5px;
   border: 0;
-  background-color: rgb(149, 146, 147);
+  background-color: rgb(110, 115, 127);
   color: white;
-  padding: 7px 15px;
+  padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
 }
 .postSubmit-Button:hover {
   transform: scale(1.03);
@@ -31,4 +33,19 @@
   padding: 8px;
   resize: none;
   margin-bottom: 10px;
+}
+
+.return_Button {
+  margin-right: 5px;
+  border: 0;
+  background-color: rgb(149, 153, 162);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.return_Button:hover {
+  transform: scale(1.1);
+  transition-duration: 0.3s;
 }

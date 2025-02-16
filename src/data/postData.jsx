@@ -10,7 +10,7 @@ export const BoardPost = [
         id: 1, // 게시글 순서 번호
         title: "This is the first post", // 제목
         content: "dkdlskdkdkdkdk내용내용", //글 내용
-        time: "2025-02-12", // 게시글 올린 시간
+        time: "2025-02-13", // 게시글 올린 시간
         ModDate: "",
         user: "hannah",
       }, // --> { }이거 하나가 객체(게시글 객체)임.

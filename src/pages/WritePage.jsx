@@ -25,12 +25,16 @@ function WritePostPage() {
     e.preventDefault();
     // 여기서 폼 제출 로직을 구현합니다.
     // 제출 후, 해당 게시판 페이지로 이동
-    const currentTime = new Date().toISOString().split("T")[0];
+    const offset = new Date().getTimezoneOffset() * 60000;
+    const createdDate = new Date(Date.now() - offset)
+      .toISOString()
+      .replace("T", " ")
+      .replace(/\..*/, "");
     const newPost = {
       id: Date.now(), // 간단한 고유 id (실제 DB에서는 다른 방법 사용)
       title,
       content,
-      time: currentTime,
+      time: createdDate,
       // ModDate,
       user: "hannah", // 로그인 시스템이 있다면 실제 사용자 정보로 교체
     };

@@ -38,7 +38,7 @@ function PostTable({ posts }) {
           ))
         ) : (
           <tr>
-            <td colSpan="4">게시글이 없습니다.</td>
+            <td colSpan="5">게시글이 없습니다.</td>
           </tr>
         )}
       </tbody>

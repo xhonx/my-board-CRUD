@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { BoardContext } from "../contexts/BoardContext";
 import BoardTabs from "../components/BoardTabs";
@@ -7,6 +7,10 @@ import "../readStyles.css";
 function ReadPostPage() {
   const { boardName, postId } = useParams();
   const { boards, setBoards } = useContext(BoardContext);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalBackground = useRef();
+
   const navigate = useNavigate();
   const goToBoardPage = () => {
     navigate("/board/HN");
@@ -26,27 +30,10 @@ function ReadPostPage() {
   if (!post) {
     return <div>게시글을 찾을 수 없습니다.</div>;
   }
+
   const createdDate = new Date(post.time).toLocaleString();
   const modifiedDate = new Date(post.ModDate).toLocaleString();
   const showModifiedDate = post.ModDate && post.ModDate !== post.time;
-
-  const handleDelete = () => {
-    if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
-      setBoards((prevBoards) =>
-        prevBoards.map((board) => {
-          if (board.BoardIndex.toLowerCase() === boardName.toLowerCase()) {
-            return {
-              ...board,
-              posts: board.posts.filter((p) => String(p.id) !== postId),
-            };
-          }
-          return board;
-        })
-      );
-      // 삭제 후 해당 게시판 목록 페이지로 이동
-      navigate(`/board/${boardName}`);
-    }
-  };
 
   return (
     <div className="container-purple">
@@ -64,7 +51,6 @@ function ReadPostPage() {
             <BoardTabs />
           </div>
           <div className="board-container">
-            {/* 여기서부터 채우기 */}
             <div className="read_container">
               <h2
                 style={{
@@ -78,21 +64,29 @@ function ReadPostPage() {
               </h2>
               <div className="post_info">
                 <p>
-                  <strong>작성일:</strong> {createdDate}
+                  <strong>작성일 </strong> {createdDate}
                   {showModifiedDate && (
                     <>
-                      &nbsp;|&nbsp;<strong>수정일:</strong>
+                      &nbsp;&nbsp;|&nbsp; <strong>마지막수정일 </strong>
                       {modifiedDate}
                     </>
                   )}{" "}
-                  &nbsp;|&nbsp; <strong>작성자:</strong> {post.user}
+                  &nbsp;|&nbsp; <strong>작성자 </strong> {post.user}
                 </p>
               </div>
 
-              {/* 만약 post 객체에 내용(content) 필드가 있다면 표시합니다. */}
               <div
                 style={{
-                  marginTop: "40px",
+                  marginTop: "30px",
+                  maxWidth: "150%",
+                  height: "320px",
+                  minHeight: "200px",
+                  padding: "20px",
+                  overflow: "scroll",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "pre",
+                  border: "1px solid grey",
+                  borderRadius: "10px",
                 }}
               >
                 {post.content ? post.content : "게시글 내용이 없습니다."}
@@ -106,9 +100,64 @@ function ReadPostPage() {
                 >
                   수정
                 </button>
-                <button className="delete_button" onClick={handleDelete}>
+                {/* 수정: onClick을 화살표 함수로 감싸서 즉시 실행되지 않도록 함 */}
+                <button
+                  className="delete_button"
+                  onClick={() => setModalOpen(true)}
+                >
                   삭제
                 </button>
+                {modalOpen && (
+                  <div
+                    className="modal-container"
+                    ref={modalBackground}
+                    onClick={(e) => {
+                      if (e.target === modalBackground.current) {
+                        setModalOpen(false);
+                      }
+                    }}
+                  >
+                    <div className="modal-content">
+                      <h4 className="msg">이 게시글을 삭제하시겠습니까?</h4>
+                      <div className="btns">
+                        <button
+                          className="modal_no_btn"
+                          onClick={() => setModalOpen(false)}
+                        >
+                          아니오
+                        </button>
+                        <button
+                          className="modal_yes_btn"
+                          onClick={() => {
+                            // boards 상태 업데이트: 해당 게시판에서 postId에 해당하는 게시글 삭제
+                            setBoards((prevBoards) =>
+                              prevBoards.map((board) => {
+                                if (
+                                  board.BoardIndex.toLowerCase() ===
+                                  boardName.toLowerCase()
+                                ) {
+                                  return {
+                                    ...board,
+                                    posts: board.posts.filter(
+                                      (p) => String(p.id) !== postId
+                                    ),
+                                  };
+                                }
+                                return board;
+                              })
+                            );
+                            // 게시판 목록 페이지로 이동
+                            navigate(`/board/${boardName}`);
+                            // 모달 창 닫기
+                            setModalOpen(false);
+                          }}
+                        >
+                          예
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <button
                   className="list_button"
                   onClick={() => navigate(`/board/${boardName}`)}
@@ -121,7 +170,6 @@ function ReadPostPage() {
         </div>
       </div>
     </div>
-    //  여기서부터 원래 코드
   );
 }
 

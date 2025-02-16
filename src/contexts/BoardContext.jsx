@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import BoardContext from "./BoardContextValue";
+import BoardContext from "./BoardContextValue"; // 컨텍스트 객체 가져오기
 
 export const BoardProvider = ({ children }) => {
   const [boards, setBoards] = useState([]);
@@ -33,3 +33,6 @@ export const BoardProvider = ({ children }) => {
 BoardProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
+
+// BoardContext 객체도 함께 export
+export { BoardContext };

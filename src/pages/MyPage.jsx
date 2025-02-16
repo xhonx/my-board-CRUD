@@ -1,7 +1,7 @@
 // import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MyPageTab from "../components/MyPageTab";
-import "../myPageStyles.css";
+import "../mypageStyles.css";
 
 function MyPage() {
   const { indexName } = useParams();

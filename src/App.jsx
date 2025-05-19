@@ -13,16 +13,10 @@ function App() {
       <div className="app-container">
         <Routes>
           <Route path="/" element={<Navigate to="/board/HN" replace />} />
-          <Route path="/board/:boardName" element={<BoardPage />}></Route>
+          <Route path="/board/:boardName" element={<BoardPage />} />
           <Route path="/board/:boardName/write" element={<WritePage />} />
-          <Route
-            path="/board/:boardName/post/:postId"
-            element={<ReadPostPage />}
-          />
-          <Route
-            path="/board/:boardName/post/:postId/edit"
-            element={<EditPostPage />}
-          />
+          <Route path="/board/:boardName/post/:postId" element={<ReadPostPage />} />
+          <Route path="/board/:boardName/post/:postId/edit" element={<EditPostPage />} />
           <Route path="/myPage/:indexName" element={<MyPage />} />
         </Routes>
       </div>

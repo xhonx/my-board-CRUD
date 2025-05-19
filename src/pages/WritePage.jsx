@@ -9,6 +9,7 @@ import "../writeStyles.css";
 function WritePostPage() {
   const { boardName } = useParams();
   const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -22,10 +23,7 @@ function WritePostPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const offset = new Date().getTimezoneOffset() * 60000;
-    const createdDate = new Date(Date.now() - offset)
-      .toISOString()
-      .replace("T", " ")
-      .replace(/\..*/, "");
+    const createdDate = new Date(Date.now() - offset).toISOString().replace("T", " ").replace(/\..*/, "");
     const newPost = {
       board: boardName, // 추가: 게시판 정보 포함
       // id는 보통 백엔드에서 생성하지만, 임시로 Date.now() 사용
@@ -35,7 +33,6 @@ function WritePostPage() {
       time: createdDate,
       user: "hannah",
     };
-    console.log("New post:", newPost);
 
     try {
       await createPost(newPost);

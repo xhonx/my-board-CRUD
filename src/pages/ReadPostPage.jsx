@@ -34,18 +34,14 @@ function ReadPostPage() {
   }
 
   const createdDate = new Date(post.time).toLocaleString();
-  const modifiedDate = post.ModDate
-    ? new Date(post.ModDate).toLocaleString()
-    : "";
+  const modifiedDate = post.ModDate ? new Date(post.ModDate).toLocaleString() : "";
   const showModifiedDate = post.ModDate && post.ModDate !== post.time;
 
   const handleDelete = async () => {
     try {
       await deletePost(postId);
       // 업데이트: Context 상태에서 해당 게시글 제거
-      setBoards((prevPosts) =>
-        prevPosts.filter((p) => String(p.id) !== postId)
-      );
+      setBoards((prevPosts) => prevPosts.filter((p) => String(p.id) !== postId));
       navigate(`/board/${boardName}`);
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -110,16 +106,11 @@ function ReadPostPage() {
               <div className="button_container">
                 <button
                   className="update_button"
-                  onClick={() =>
-                    navigate(`/board/${boardName}/post/${postId}/edit`)
-                  }
+                  onClick={() => navigate(`/board/${boardName}/post/${postId}/edit`)}
                 >
                   수정
                 </button>
-                <button
-                  className="delete_button"
-                  onClick={() => setModalOpen(true)}
-                >
+                <button className="delete_button" onClick={() => setModalOpen(true)}>
                   삭제
                 </button>
                 {modalOpen && (
@@ -135,10 +126,7 @@ function ReadPostPage() {
                     <div className="modal-content">
                       <h4 className="msg">이 게시글을 삭제하시겠습니까?</h4>
                       <div className="btns">
-                        <button
-                          className="modal_no_btn"
-                          onClick={() => setModalOpen(false)}
-                        >
+                        <button className="modal_no_btn" onClick={() => setModalOpen(false)}>
                           아니오
                         </button>
                         <button
@@ -154,10 +142,7 @@ function ReadPostPage() {
                     </div>
                   </div>
                 )}
-                <button
-                  className="list_button"
-                  onClick={() => navigate(`/board/${boardName}`)}
-                >
+                <button className="list_button" onClick={() => navigate(`/board/${boardName}`)}>
                   목록으로
                 </button>
               </div>

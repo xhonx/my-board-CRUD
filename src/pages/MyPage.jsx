@@ -1,4 +1,5 @@
-// import { useState, useEffect } from "react";
+// 로그인, 마이페이지, 댓글 등의 기능은 추후에 더 공부하고 만들 예정.
+
 import { useNavigate, useParams } from "react-router-dom";
 import MyPageTab from "../components/MyPageTab";
 import "../myPageStyles.css";

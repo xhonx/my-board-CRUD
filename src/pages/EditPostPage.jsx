@@ -10,7 +10,6 @@ function EditPostPage() {
   const { boards, setBoards } = useContext(BoardContext);
   const navigate = useNavigate();
 
-  // 모든 Hook은 최상위에서 호출
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -18,17 +17,9 @@ function EditPostPage() {
   const isLoading = !boards || boards.length === 0;
 
   // boards가 로드된 경우, boardName과 일치하는 게시글들만 필터링
-  const filteredPosts = boards
-    ? boards.filter(
-        (post) =>
-          post.board && post.board.toLowerCase() === boardName.toLowerCase()
-      )
-    : [];
+  const filteredPosts = boards ? boards.filter((post) => post.board && post.board.toLowerCase() === boardName.toLowerCase()) : [];
   const boardNotFound = !isLoading && filteredPosts.length === 0;
-  const foundPost =
-    !isLoading && !boardNotFound
-      ? filteredPosts.find((p) => String(p.id) === postId)
-      : null;
+  const foundPost = !isLoading && !boardNotFound ? filteredPosts.find((p) => String(p.id) === postId) : null;
   const postNotFound = !isLoading && !boardNotFound && !foundPost;
 
   // useEffect는 항상 호출되며 내부에서 조건에 따라 업데이트
@@ -57,10 +48,7 @@ function EditPostPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const offset = new Date().getTimezoneOffset() * 60000;
-    const modDate = new Date(Date.now() - offset)
-      .toISOString()
-      .replace("T", " ")
-      .replace(/\..*/, "");
+    const modDate = new Date(Date.now() - offset).toISOString().replace("T", " ").replace(/\..*/, "");
 
     const updatedPost = {
       ...foundPost,
@@ -72,15 +60,7 @@ function EditPostPage() {
     try {
       const response = await updatePost(postId, updatedPost);
       // Context 업데이트: 해당 게시글만 업데이트
-      setBoards((prevPosts) =>
-        prevPosts.map((p) =>
-          String(p.id) === postId
-            ? response.data
-              ? response.data
-              : updatedPost
-            : p
-        )
-      );
+      setBoards((prevPosts) => prevPosts.map((p) => (String(p.id) === postId ? (response.data ? response.data : updatedPost) : p)));
       navigate(`/board/${boardName}/post/${postId}`);
     } catch (error) {
       console.error("Error updating post:", error);
@@ -88,11 +68,6 @@ function EditPostPage() {
   };
 
   const createdDate = new Date(foundPost.time).toLocaleString();
-  // const modifiedDate = foundPost.ModDate
-  //   ? new Date(foundPost.ModDate).toLocaleString()
-  //   : "";
-  // const showModifiedDate =
-  //   foundPost.ModDate && foundPost.ModDate !== foundPost.time;
 
   return (
     <div className="container-purple">
@@ -154,11 +129,7 @@ function EditPostPage() {
                   }}
                 />
                 <div style={{ textAlign: "center", marginTop: "10px" }}>
-                  <button
-                    className="cancle_button"
-                    type="button"
-                    onClick={() => navigate(-1)}
-                  >
+                  <button className="cancle_button" type="button" onClick={() => navigate(-1)}>
                     취소
                   </button>
                   <button className="update_button" type="submit">

@@ -1,6 +1,7 @@
 // src/pages/BoardPage.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 import { fetchPosts } from "../services/postService";
 import BoardTabs from "../components/BoardTabs";
 import SearchBar from "../components/SearchBar";
@@ -10,30 +11,31 @@ import SearchButton from "../components/SearchButton";
 import BoardTitle from "../components/BoardTitle";
 
 function BoardPage() {
-  const { boardName } = useParams();
-  const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { boardName } = useParams(); // url /:BoardName 에서 파라미터 추출
+  const navigate = useNavigate(); // useNavigate 훅으로 페이지 이동시키는 함수(navigate) 생성
+  const [posts, setPosts] = useState([]); // 게시글 데이터를 저장할 상태를 빈 배열로 초기화
+  const [loading, setLoading] = useState(true); // 로딩 여부를 관리할 상태 초기화, 초기값은 true
+  const [error, setError] = useState(null); // 에러
 
+  // navigate 함수: 해당 경로로 이동시킨다. (버튼 onClick으로 함수 호출)
   const goToMyPage = () => {
     navigate("/myPage/Profile");
   };
-
   const goToWritePage = () => {
-    navigate(`/board/${boardName}/write`);
+    navigate(`/board/${boardName}/write`); // useParams로 추출했던 ${현재 게시판} 의 글쓰기 페이지로 이동
   };
 
   useEffect(() => {
     const loadPosts = async () => {
+      // 비동기로 처리한다
       try {
-        const data = await fetchPosts(boardName);
+        const data = await fetchPosts(boardName); // fetchPosts, 특정 게시판의 게시글 목록 가져옴. (API 함수 호출)
         setPosts(data);
       } catch (err) {
         console.error("Error loading posts:", err);
         setError("게시글을 불러오는데 실패했습니다.");
       } finally {
-        setLoading(false);
+        setLoading(false); // 기본값은 true 였다가 데이터 처리 완료 후 로딩상태 제거
       }
     };
     loadPosts();
@@ -61,15 +63,7 @@ function BoardPage() {
               <SearchButton />
               <WriteButton onClick={goToWritePage} />
             </div>
-            <div className="table_container">
-              {loading ? (
-                <div>Loading...</div>
-              ) : error ? (
-                <div>{error}</div>
-              ) : (
-                <PostTable posts={posts} />
-              )}
-            </div>
+            <div className="table_container">{loading ? <div>Loading...</div> : error ? <div>{error}</div> : <PostTable posts={posts} />}</div>
           </div>
         </div>
       </div>

@@ -25,7 +25,7 @@ export const fetchPosts = async (board) => {
  */
 export const fetchPost = async (postId) => {
   try {
-    const response = await api.get(`/posts/${postId}`);
+    const response = await api.get(`/posts/board/${postId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching post:", error);

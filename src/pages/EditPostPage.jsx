@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { BoardContext } from "../contexts/BoardContext";
-import { updatePost } from "../services/postService";
+import { updatePost, fetchPost } from "../services/postService";
 import BoardTabs from "../components/BoardTabs";
 import "../readStyles.css";
 
@@ -22,13 +22,22 @@ function EditPostPage() {
   const foundPost = !isLoading && !boardNotFound ? filteredPosts.find((p) => String(p.id) === postId) : null;
   const postNotFound = !isLoading && !boardNotFound && !foundPost;
 
-  // useEffect는 항상 호출되며 내부에서 조건에 따라 업데이트
+  // 1) 백엔드로부터 받은 완전한 post 객체
+  const [post, setPost] = useState(null);
+
+  // 컴포넌트 마운트 시 단일 포스트 조회
   useEffect(() => {
-    if (foundPost) {
-      setTitle(foundPost.title);
-      setContent(foundPost.content || "");
-    }
-  }, [foundPost]);
+    (async () => {
+      try {
+        const data = await fetchPost(postId); // GET /posts/{postId}
+        setPost(data);
+        setTitle(data.title);
+        setContent(data.content || "");
+      } catch (err) {
+        console.error("Failed to load post:", err);
+      }
+    })();
+  }, [postId]);
 
   // 조건에 따른 렌더링
   if (isLoading) {
@@ -50,6 +59,13 @@ function EditPostPage() {
     const offset = new Date().getTimezoneOffset() * 60000;
     const modDate = new Date(Date.now() - offset).toISOString().replace("T", " ").replace(/\..*/, "");
 
+    const payload = {
+      title,
+      content,
+      user: post.user, // optional 이지만, 주입 원하면
+      ModDate: modDate, // schemas/PostUpdate 에 추가했다면
+    };
+
     const updatedPost = {
       ...foundPost,
       title,
@@ -58,7 +74,7 @@ function EditPostPage() {
     };
 
     try {
-      const response = await updatePost(postId, updatedPost);
+      const response = await updatePost(postId, payload);
       // Context 업데이트: 해당 게시글만 업데이트
       setBoards((prevPosts) => prevPosts.map((p) => (String(p.id) === postId ? (response.data ? response.data : updatedPost) : p)));
       navigate(`/board/${boardName}/post/${postId}`);

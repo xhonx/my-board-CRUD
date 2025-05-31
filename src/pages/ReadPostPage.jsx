@@ -102,7 +102,7 @@ function ReadPostPage() {
                   style={{
                     marginTop: "30px",
                     maxWidth: "120%",
-                    minHeight: "300px",
+                    maxHeight: "300px",
                     padding: "20px",
                     overflow: "scroll",
                     textOverflow: "ellipsis",
